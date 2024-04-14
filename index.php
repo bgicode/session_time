@@ -1,25 +1,40 @@
-<?php ## Пример работы с сессиями
+<?php
 session_start();
 
-if (!isset($_SESSION['time'])) $_SESSION['time'] = time();
-// Увеличиваем счетчик в сессии
+if (!isset($_SESSION['time'])) {
+    $_SESSION['time'] = time();
+} 
+
 $time = time() - $_SESSION['time'];
-echo $time;
+
 if ($_POST['reload']) {
+
     $_SESSION = [];
-    // Удалить cookie, соответствующую SID
+
     unset($_COOKIE[session_name()]);
-    // Уничтожить хранилище сессии
+
     session_destroy();
+
     header('Location: index.php');
 }
 ?>
-<form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
-<input class="input" type="submit" name="reload" value="сбросить">
-<form>
-<h2>Счетчик</h2>
-В текущей сессии работает
-<?= $time ?> секунд <br />
-Закройте браузер, чтобы обнулить счетчик.<br />
-<a href="<?= $_SERVER['SCRIPT_NAME'] ?>" target="_blank">Открыть дочернее окно
-браузера</a>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>session</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <div class="wrap">
+        <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
+            <input class="input" type="submit" name="reload" value="сбросить сессию">
+        <form>
+        <div class="counterWrap">
+            <span>текущая сессии работает: <?= $time ?> секунд</span>
+        </div>
+    </div>
+</body>
+</html>
